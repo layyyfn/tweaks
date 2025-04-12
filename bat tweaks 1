@@ -1,0 +1,194 @@
+@echo off
+title Fortnite Optimizer by Layyy
+color 0A
+setlocal
+
+:main_menu
+cls
+echo ========================================
+echo         Layyy Tweaks Menu
+echo ========================================
+echo 1. System Tweaks
+echo 2. Advanced Tweaks
+echo 3. Gaming Tweaks
+echo 4. Network Tweaks
+echo 5. KBM Tweaks
+echo 6. Cleaner Tools
+echo 7. Revert Changes
+echo 8. Quit
+echo ========================================
+set /p choice="Select an option: "
+
+if "%choice%"=="1" goto system_tweaks
+if "%choice%"=="2" goto advanced_tweaks
+if "%choice%"=="3" goto gaming_tweaks
+if "%choice%"=="4" goto network_tweaks
+if "%choice%"=="5" goto kbm_tweaks
+if "%choice%"=="6" goto cleaner_tools
+if "%choice%"=="7" goto revert_changes
+if "%choice%"=="8" exit
+goto main_menu
+
+:system_tweaks
+cls
+echo System Tweaks:
+echo 1. Enable High Perf Power Plan
+echo 2. Disable Background Apps
+echo 3. Disable Visual Effects
+echo 4. Enable Fast Startup
+echo 5. Disable Hibernation
+echo 6. Disable Windows Error Reporting
+echo 7. Disable Remote Assistance
+echo 8. Disable Scheduled Tasks
+echo 9. Disable System Restore
+echo 10. Back
+set /p choice="Select an option: "
+if "%choice%"=="1" powercfg -setactive SCHEME_MAX
+if "%choice%"=="2" echo Background apps disabling requires manual configuration.
+if "%choice%"=="3" echo Visual effects tweaking requires manual configuration.
+if "%choice%"=="4" powercfg /hibernate off
+if "%choice%"=="5" reg add "HKLM\SYSTEM\ControlSet001\Control\Session Manager\Power" /v HiberbootEnabled /t REG_DWORD /d 1 /f
+if "%choice%"=="6" reg add "HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting" /v Disabled /t REG_DWORD /d 1 /f
+if "%choice%"=="7" reg add "HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" /v fAllowToGetHelp /t REG_DWORD /d 0 /f
+if "%choice%"=="8" echo Disabling scheduled tasks requires manual configuration.
+if "%choice%"=="9" reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" /v DisableSR /t REG_DWORD /d 1 /f
+if "%choice%"=="10" goto main_menu
+pause
+goto system_tweaks
+
+:advanced_tweaks
+cls
+echo Advanced Tweaks:
+echo 1. Disable Cortana
+echo 2. Disable Indexing
+echo 3. Disable Startup Sound
+echo 4. Disable Notifications
+echo 5. Disable Action Center
+echo 6. Disable Automatic Updates
+echo 7. Disable Background Intelligent Transfer Service (BITS)
+echo 8. Disable Telemetry
+echo 9. Optimize Paging File
+echo 10. Back
+set /p choice="Select an option: "
+if "%choice%"=="1" reg add "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /v AllowCortana /t REG_DWORD /d 0 /f
+if "%choice%"=="2" echo Disabling indexing requires manual configuration.
+if "%choice%"=="3" reg add "HKCU\AppEvents\Schemes\Apps\.Default\.Default\.Current" /d "" /f
+if "%choice%"=="4" reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\PushNotifications" /v ToastEnabled /t REG_DWORD /d 0 /f
+if "%choice%"=="5" reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v DisableNotificationCenter /t REG_DWORD /d 1 /f
+if "%choice%"=="6" reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v NoAutoUpdate /t REG_DWORD /d 1 /f
+if "%choice%"=="7" sc config BITS start= disabled & sc stop BITS
+if "%choice%"=="8" reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f
+if "%choice%"=="9" echo Paging file optimization requires manual configuration.
+if "%choice%"=="10" goto main_menu
+pause
+goto advanced_tweaks
+
+:gaming_tweaks
+cls
+echo Gaming Tweaks:
+echo 1. Disable Game Bar
+echo 2. Disable Game Mode
+echo 3. Enable Ultra-Low Latency Mode
+echo 4. Disable Fullscreen Optimizations
+echo 5. Disable V-Sync
+echo 6. Enable High DPI Scaling
+echo 7. Enable Maximum Performance for GPU
+echo 8. Disable Xbox Services
+echo 9. Optimize GPU for Performance
+echo 10. Disable Mouse Smoothing
+echo 11. Enable Polling Rate for Mouse
+echo 12. Back
+set /p choice="Select an option: "
+if "%choice%"=="1" reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v AppCaptureEnabled /t REG_DWORD /d 0 /f
+if "%choice%"=="2" reg add "HKLM\Software\Microsoft\GameBar" /v AllowAutoGameMode /t REG_DWORD /d 0 /f
+if "%choice%"=="3" echo Low latency mode requires Nvidia/AMD configuration.
+if "%choice%"=="4" echo Fullscreen optimizations require application-specific settings.
+if "%choice%"=="5" echo Disabling V-Sync requires GPU control panel settings.
+if "%choice%"=="6" echo High DPI scaling override requires application-specific settings.
+if "%choice%"=="7" echo GPU performance requires Nvidia/AMD control panel settings.
+if "%choice%"=="8" sc config XboxGipSvc start= disabled & sc stop XboxGipSvc
+if "%choice%"=="9" reg add "HKLM\SYSTEM\CurrentControlSet\Control\GraphicsDrivers" /v TdrLevel /t REG_DWORD /d 0 /f
+if "%choice%"=="10" reg add "HKCU\Control Panel\Mouse" /v MouseTrails /t REG_DWORD /d 0 /f
+if "%choice%"=="11" echo High polling rate requires mouse-specific software.
+if "%choice%"=="12" goto main_menu
+pause
+goto gaming_tweaks
+
+:network_tweaks
+cls
+echo Network Tweaks:
+echo 1. Optimize TCP Stack
+echo 2. Disable Nagle's Algorithm
+echo 3. Set Google DNS
+echo 4. Disable QoS Limit
+echo 5. Disable IPv6
+echo 6. Enable TCP Fast Open
+echo 7. Disable Network Discovery
+echo 8. Disable NetBIOS
+echo 9. Disable SMB Protocol
+echo 10. Back
+set /p choice="Select an option: "
+if "%choice%"=="1" netsh int tcp set global autotuninglevel=disabled
+if "%choice%"=="2" reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v TcpAckFrequency /t REG_DWORD /d 1 /f
+if "%choice%"=="3" echo Setting Google DNS requires manual configuration.
+if "%choice%"=="4" reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\QoS" /v NoQoSPolicy /t REG_DWORD /d 1 /f
+if "%choice%"=="5" reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" /v DisabledComponents /t REG_DWORD /d 0xFF /f
+if "%choice%"=="6" reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v EnableTCPFastOpen /t REG_DWORD /d 1 /f
+if "%choice%"=="7" reg add "HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" /v NullSessionPipes /d "" /f
+if "%choice%"=="8" reg add "HKLM\SYSTEM\CurrentControlSet\Services\NetBT\Parameters" /v EnableLmHosts /t REG_DWORD /d 0 /f
+if "%choice%"=="9" sc config mrxsmb10 start= disabled
+if "%choice%"=="10" goto main_menu
+pause
+goto network_tweaks
+
+:kbm_tweaks
+cls
+echo KBM Tweaks:
+echo 1. Disable Mouse Accel
+echo 2. Disable Filter Keys
+echo 3. Disable Sticky Keys
+echo 4. Enable High Polling Rate
+echo 5. Disable Mouse Trails
+echo 6. Enable Raw Input
+echo 7. Disable Keyboard Delay
+echo 8. Back
+set /p choice="Select an option: "
+if "%choice%"=="1" reg add "HKCU\Control Panel\Mouse" /v MouseSpeed /t REG_SZ /d 0 /f
+if "%choice%"=="2" reg add "HKCU\Control Panel\Accessibility\Keyboard Response" /v AutoRepeatDelay /t REG_SZ /d 0 /f
+if "%choice%"=="3" reg add "HKCU\Control Panel\Accessibility\StickyKeys" /v Flags /t REG_SZ /d 506 /f
+if "%choice%"=="4" echo High polling rate requires mouse-specific software.
+if "%choice%"=="5" reg add "HKCU\Control Panel\Mouse" /v MouseTrails /t REG_DWORD /d 0 /f
+if "%choice%"=="6" echo Raw input requires application-specific settings.
+if "%choice%"=="7" reg add "HKCU\Control Panel\Keyboard" /v KeyboardDelay /t REG_SZ /d 0 /f
+if "%choice%"=="8" goto main_menu
+pause
+goto kbm_tweaks
+
+:cleaner_tools
+cls
+echo Cleaner Tools:
+echo 1. Clear Temp Files
+echo 2. Clear Prefetch
+echo 3. Flush DNS
+echo 4. Empty Recycle Bin
+echo 5. Clear Windows Update Cache
+echo 6. Clear Event Logs
+echo 7. Clear Temporary Internet Files
+echo 8. Back
+set /p choice="Select an option: "
+if "%choice%"=="1" del /q /f %temp%\*
+if "%choice%"=="2" del /q /f C:\Windows\Prefetch\*
+if "%choice%"=="3" ipconfig /flushdns
+if "%choice%"=="4" echo Y | PowerShell -NoProfile -Command Clear-RecycleBin
+if "%choice%"=="5" del /q /f C:\Windows\SoftwareDistribution\Download\*
+if "%choice%"=="6" wevtutil cl Application & wevtutil cl System
+if "%choice%"=="7" del /q /f "%userprofile%\AppData\Local\Microsoft\Windows\INetCache\*"
+if "%choice%"=="8" goto main_menu
+pause
+goto cleaner_tools
+
+:revert_changes
+cls
+echo Reverting all optimizations...
+pause
+goto main_menu
